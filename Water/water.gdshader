@@ -111,7 +111,7 @@ void vertex() {
 void fragment() {
 	vec3 view_dir = normalize(-VERTEX);
     float fresnel = dot(normalize(NORMAL), view_dir);
-    fresnel = pow(1.0 - fresnel, 4.0);
+    fresnel = pow(1.0 - fresnel, 5.0);
 
     ALBEDO = mix(water_colour, fresnel_colour, fresnel * 0.5);
     SPECULAR = 0.2;
