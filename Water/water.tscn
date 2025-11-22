@@ -1,0 +1,81 @@
+[gd_scene load_steps=9 format=3 uid="uid://d1iroppf1e4id"]
+
+[ext_resource type="Shader" uid="uid://b8cwwcy15ly8n" path="res://Water/water.gdshader" id="1_5fxx5"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5fxx5"]
+sky_curve = 0.117687754
+ground_bottom_color = Color(0.38431373, 0.45490196, 0.54901963, 1)
+ground_curve = 0.5971409
+
+[sub_resource type="Sky" id="Sky_5osll"]
+sky_material = SubResource("ProceduralSkyMaterial_5fxx5")
+
+[sub_resource type="Environment" id="Environment_oj1mp"]
+background_mode = 2
+sky = SubResource("Sky_5osll")
+ambient_light_source = 3
+tonemap_mode = 3
+volumetric_fog_density = 0.0165
+volumetric_fog_anisotropy = -0.9
+adjustment_brightness = 1.25
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_5fxx5"]
+noise_type = 3
+frequency = 0.001
+offset = Vector3(245.25, -82.75, 0)
+fractal_octaves = 10
+domain_warp_amplitude = 1.0
+domain_warp_frequency = 8.75
+domain_warp_fractal_type = 2
+domain_warp_fractal_octaves = 10
+domain_warp_fractal_gain = 7.65
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5osll"]
+noise = SubResource("FastNoiseLite_5fxx5")
+as_normal_map = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5osll"]
+render_priority = 0
+shader = ExtResource("1_5fxx5")
+shader_parameter/water_colour = Color(0, 0.6962616, 0.80511385, 1)
+shader_parameter/fresnel_colour = Color(1.92523e-06, 0.9397331, 0.80312836, 1)
+shader_parameter/normal_map_cuz_ugly = SubResource("NoiseTexture2D_5osll")
+shader_parameter/amplitude1 = 10.0
+shader_parameter/phase1 = 0.5009999888715
+shader_parameter/frequency1 = 0.01099999982398
+shader_parameter/direction1 = Vector2(0.395, 0.995)
+shader_parameter/amplitude2 = 1.64099996339022
+shader_parameter/phase2 = 2.7809999379089403
+shader_parameter/frequency2 = 0.01099999982398
+shader_parameter/direction2 = Vector2(-1, 1.825)
+shader_parameter/amplitude3 = 3.92099991242766
+shader_parameter/phase3 = 0.59099998685982
+shader_parameter/frequency3 = 0.01099999982398
+shader_parameter/direction3 = Vector2(0.74, 0.22)
+shader_parameter/amplitude4 = 0.38099999155374
+shader_parameter/phase4 = 7.46099983330158
+shader_parameter/frequency4 = 0.01099999982398
+shader_parameter/direction4 = Vector2(0.82, 0.88)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_seble"]
+size = Vector2(2000, 2000)
+subdivide_width = 100
+subdivide_depth = 100
+
+[node name="Water" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_oj1mp")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.9198078, 0.3923692, 0, -0.3923692, 0.9198078, 25.3443, 0, 0)
+shadow_enabled = true
+directional_shadow_max_distance = 37.0
+
+[node name="Water" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.9999999, 0, 0, 0, 0.99999994, 0, 0, 0, 0.9999999, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_5osll")
+mesh = SubResource("PlaneMesh_seble")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-1.0000004, -1.0358781e-08, -8.680693e-08, -3.5527137e-15, 0.9929551, -0.118490696, 8.7422805e-08, -0.11849058, -0.9929554, -8.325857e-06, 45.05823, -95.236694)
